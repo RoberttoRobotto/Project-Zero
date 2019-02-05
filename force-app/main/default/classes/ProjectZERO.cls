@@ -11,9 +11,9 @@ public class ProjectZERO {
 	
 	Integer output;
     public void ProjectZERO() {
-        output = nFibonacci(integer);
+        output = nFibonacci(Integer a);
         system.debug(output);
-        output = nFactorial(integer);
+        output = nFactorial(Integer b);
         system.debug();
         Integer[] sortedArray = sortArray(Integer[]);
         system.debug('output', + sortedArray);
@@ -51,76 +51,77 @@ public class ProjectZERO {
 
     public static Integer[] sortArray( Integer[] intList ) {
 
-        Integer placeholder;
-    
+        Integer placeholder, i = intList.size();
+        
     Do { //Do...
         if (intList[i] > intList[i+1]) {//If left is bigger than right
-            placeholder = inList[i]; //left is placed into a placeholder
-            inList[i] = inList[i+1]; //left now equals right
-            inList[i+1] = placeholder;//right equals placeholder
+            placeholder = intList[i]; //left is placed into a placeholder
+            intList[i] = intList[i+1]; //left now equals right
+            intList[i+1] = placeholder;//right equals placeholder
         }
+        i++;
+    } While (i < intList.size() - 1); //...while repeated by the size of the array
 
-    } While (true); //Do...while repeated by the size of the array
+    return intList;
 }
 
 	//Factorial logic
     public static Integer nFactorial( Integer n ){
-	//Create 2 integers: a, n
-	Integer a;
-    //Continuously multiply a by the number 'n'
-	//Decrement n and end when n equals 1
-	for(a=n-1;a>1;a--) { n*=a; }
-    //a! = a * (a - 1) * .... (a - n) * 1
-    system.debug('Input: '+n+'     Output: '+a);
-	return n;
+		//Create 2 integers: a, n
+		Integer a;
+	    //Continuously multiply a by the number 'n'
+		//Decrement n and end when n equals 1
+		for(a=n-1;a>1;a--) { n*=a; }
+	    //a! = a * (a - 1) * .... (a - n) * 1
+	    system.debug('Input: '+n+'     Output: '+a);
+		return n;
     }
 
     //Rotate left logic
-    public static Integer[] rotateLeftNTimes( Integer[] array, Integer n ){
+    public static Integer[] rotateLeftNTimes( Integer[] arrayName, Integer n ){
 
-        Integer a, i, j, size = array.size();
+        Integer a, i, j, size = arrayName.size();
         for(i=n; i>0; i--){ //Repeat until i = 0
-            a = array[0]; //The first item in the array is stored into a placeholder
+            a = arrayName[0]; //The first item in the array is stored into a placeholder
             	for(j=0; j<size-2; j++){
-					array[j] = array[j+1]; //Every item in the array is moved the left
+					arrayName[j] = arrayName[j+1]; //Every item in the array is moved the left
             	}
-			a = array[size-1]; //The placeholder is placed in the last item of the array
+			a = arrayName[size-1]; //The placeholder is placed in the last item of the array
 		} //Repeat the process until n = 0
+
+		return arrayName; //Return array
     }
 
 
     //Balanced brackets logic
     public static boolean bracketsAreBalanced( String s ){
         
-        String x = '({[]})'; //Comparable string
-        Integer size = size.s;
-        
-        for(i=1; i<size; i++) {//Create a for loop 
+        for(string x : s){ //Create a for loop 
         
         //Create a switch statement
-        when on s {
+        switch on x {
 			
-                when '(' {    if (-1 == s.indexOf(')', i)){
+                when '(' {    if (-1 == s.indexOf(')', s.indexOf(')'))){
                 	return false;} //Return false if '(' was found, but ')' wasn't
-                     		  else if (s.indexOf(')', i) > s.indexOf(']', i) && s.indexOf('(') < s.indexOf(']')){
+                     		  else if (s.indexOf(')', s.indexOf(')')) > s.indexOf(']', s.indexOf(')')) && s.indexOf('(') < s.indexOf(']')){
                     return false;} //Return false if '(])' happens
-                          	  else if (s.indexOf(')', i) > s.indexOf('}', i) && s.indexOf('(') < s.indexOf('}')){
+                          	  else if (s.indexOf(')', s.indexOf(')')) > s.indexOf('}', s.indexOf(')')) && s.indexOf('(') < s.indexOf('}')){
                     return false;} //Return false if '(})' happens
                         }
                 
-                when '[' {    if (-1 == s.indexOf(']', i)){
+                when '[' {    if (-1 == s.indexOf(']', s.indexOf(']'))){
                 	return false;} //Return false if '[' was found, but ']' wasn't
-                     		  else if (s.indexOf(']', i) > s.indexOf(')', i) && s.indexOf('[') < s.indexOf(')')){
+                     		  else if (s.indexOf(']', s.indexOf(']')) > s.indexOf(')', s.indexOf(']')) && s.indexOf('[') < s.indexOf(')')){
                     return false;} //Return false if '[)]' happens
-                          	  else if (s.indexOf(']', i) > s.indexOf('}', i) && s.indexOf('[') < s.indexOf('}')){
+                          	  else if (s.indexOf(']', s.indexOf(']')) > s.indexOf('}', s.indexOf(']')) && s.indexOf('[') < s.indexOf('}')){
                     return false;} //Return false if '[}]' happens
         				}
                 
-                when '{' {    if (-1 == s.indexOf('}', i)){ 
+                when '{' {    if (-1 == s.indexOf('}', s.indexOf(']'))){ 
                 	return false;} //Return false if '{' was found, but '}' wasn't
-                          	  else if (s.indexOf('}', i) > s.indexOf(')', i) && s.indexOf('{') < s.indexOf(')')){
+                          else if (s.indexOf('}', s.indexOf('}')) > s.indexOf(')', s.indexOf('}')) && s.indexOf('{') < s.indexOf(')')){
                     return false;} //Return false if '{)}' happens
-                         	  else if (s.indexOf('}', i) > s.indexOf(']', i) && s.indexOf('{') < s.indexOf(']')){
+                          else if (s.indexOf('}', s.indexOf('}')) > s.indexOf(']', s.indexOf('}')) && s.indexOf('{') < s.indexOf(']')){
                     return false;} //Return false if '{]}' happens
                          }
                 
@@ -141,48 +142,47 @@ public class ProjectZERO {
     }
 	
     public static void updateAccountSize() {
+        //Create a list that from a query & Add query to the list
+        //list<Account> AccountList = [SELECT Id, Name, BillingState FROM Account];
 
-        //Create a list that from a query
-        list<Account> AccountList = [SELECT Id, Name, BillingState FROM Account];
-        //Add the query to the list
-        foreach AccountList as s { //For each ___ in the list...
+        for(Account AccountList: [SELECT Id, Name, BillingState FROM Account FOR UPDATE]) { //For each account in the list...
 
-        if(s.NumberOfEmployees < 1000) { //If the account has between 1-1000 employees...
-            s.Size__c = 'Small'; //Update to small
+        if(AccountList.NumberOfEmployees < 1000) { //If the account has between 1-1000 employees...
+            AccountList.Size_c__c = 'Small'; //Update to small
         }
         
-        if(s.NumberOfEmployees < 1000) { //If the account has between 1001-10000 employees...
-            s.Size__c = 'Medium'; //Update to medium
+        if(AccountList.NumberOfEmployees < 1000) { //If the account has between 1001-10000 employees...
+            AccountList.Size_c__c = 'Medium'; //Update to medium
         }
         
-        ifs.NumberOfEmployees < 1000) { //If the account has more than 10000 employees...
-            s.Size__c = 'Large'; //Update to large
+        if(AccountList.NumberOfEmployees < 1000) { //If the account has more than 10000 employees...
+            AccountList.Size_c__c = 'Large'; //Update to large
         }
         } //End foreach
     }
 
     public static void updateCALeads() {
         //Find all leads that contain 'ca' in their fields
-        list<Lead> LeadList = [SELECT Id, Name, BillingState FROM Account WHERE BillingState = 'CA'];
-        //If a field islocated in ca, change lead status field to 'Closed-not converted'
-        foreach LeadList as s {
-            s.Status = 'Closed - Not Converted';
-            s.Description = 'We are no longer doing business in California.';
+        //list<Lead> LeadList = [SELECT Name FROM Lead WHERE Address = 'CA' FOR UPDATE];
+        
+        for(Lead LeadList: [SELECT Name FROM Lead WHERE Address = 'CA' FOR UPDATE]){
+            LeadList.Status = 'Closed - Not Converted'; //If a field islocated in ca, change lead status field to 'Closed-not converted'
+            LeadList.Description = 'We are no longer doing business in California.'; //Change description
         }
-
     }
 
-    public static void vlose PastDueOpportunities() {
-        //Select all queries that have passed their close date
-        list<opportunities> toMakeClosedLost = [SELECT AccountId
-        FROM opportunities
-        WHERE opportunities.CALENDER_YEAR >= closeddate.CALENDER_YEAR //Year >=...
-        AND queries.DAY_IN_YEAR > closeddate.CALENDER_YEAR //
-        AND Stage != 'Closed Won';
-        FOR UPDATE];
+    public static void closePastDueOpportunities() {
+        
+		//list<opportunities> toMakeClosedLost
 
-        foreach toMakeClosedLost as s { 
-            s.Stage = 'Closed Lost'; //The marked will be closed lost
+        //Select all queries that have passed their close dat
+        for(Opportunity toMakeCloseLost: [SELECT AccountId 
+                                          FROM Opportunity 
+                                          WHERE Opportunity.CALENDER_YEAR >= CloseDate 
+                                          AND Opportunity.DAY_IN_YEAR > CloseDate 
+                                          AND Stage != 'Closed Won' 
+                                          FOR UPDATE]){ 
+            toMakeCloseLost.Stage = 'Closed Lost'; //The marked will be closed lost
         }
     }
 }
