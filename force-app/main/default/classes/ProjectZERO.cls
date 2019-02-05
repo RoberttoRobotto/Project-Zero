@@ -9,15 +9,23 @@
 
 public class ProjectZERO {
 	
-//  static integer a, b, c, n, i, output;
-	int output;
+	Integer output;
     public void ProjectZERO() {
-        output = nFibonacci(args[]);
-        output = nFactorial(args[]);
-		
+        output = nFibonacci(integer);
+        system.debug(output);
+        output = nFactorial(integer);
+        system.debug();
+        Integer[] sortedArray = sortArray(Integer[]);
+        system.debug('output', + sortedArray);
+        Integer[] array = rotateLeftNTimes(Integer[], Integer);
+        system.debug('output', + array[]);
+        bracketsAreBalanced();
+        updateAccountSize();
+        updateCALeads();
+        closePastDueOpportunities();
     }
     
-	//Fibonacci sequence
+	//Fibonacci sequence (1)
     public static Integer nFibonacci( Integer n ){
 	//Use 5 integers: a, b, c, n, i
 	Integer a, b, c, i;
@@ -40,7 +48,21 @@ public class ProjectZERO {
 		//Print result
 		return c;
 }
+
+    public static Integer[] sortArray( Integer[] intList ) {
+
+        Integer placeholder;
     
+    Do { //Do...
+        if (intList[i] > intList[i+1]) {//If left is bigger than right
+            placeholder = inList[i]; //left is placed into a placeholder
+            inList[i] = inList[i+1]; //left now equals right
+            inList[i+1] = placeholder;//right equals placeholder
+        }
+
+    } While (true); //Do...while repeated by the size of the array
+}
+
 	//Factorial logic
     public static Integer nFactorial( Integer n ){
 	//Create 2 integers: a, n
@@ -52,6 +74,20 @@ public class ProjectZERO {
     system.debug('Input: '+n+'     Output: '+a);
 	return n;
     }
+
+    //Rotate left logic
+    public static Integer[] rotateLeftNTimes( Integer[] array, Integer n ){
+
+        Integer a, i, j, size = array.size();
+        for(i=n; i>0; i--){ //Repeat until i = 0
+            a = array[0]; //The first item in the array is stored into a placeholder
+            	for(j=0; j<size-2; j++){
+					array[j] = array[j+1]; //Every item in the array is moved the left
+            	}
+			a = array[size-1]; //The placeholder is placed in the last item of the array
+		} //Repeat the process until n = 0
+    }
+
 
     //Balanced brackets logic
     public static boolean bracketsAreBalanced( String s ){
@@ -103,18 +139,50 @@ public class ProjectZERO {
         //The brackets are balanced!
         return true;
     }
-    
-    //Rotate left logic
-    public static Integer[] rotateLeft( Integer[] array, Integer n ){
+	
+    public static void updateAccountSize() {
 
-        Integer a, i, j, size = array.size();
-        for(i=n; i>0; i--){ //Repeat until i = 0
-            a = array[0]; //The first item in the array is stored into a placeholder
-            	for(j=0; j<size-2; j++){
-					array[j] = array[j+1]; //Every item in the array is moved the left
-            	}
-			a = array[size-1]; //The placeholder is placed in the last item of the array
-		} //Repeat the process until n = 0
+        //Create a list that from a query
+        list<Account> AccountList = [SELECT Id, Name, BillingState FROM Account];
+        //Add the query to the list
+        foreach AccountList as s { //For each ___ in the list...
+
+        if(s.NumberOfEmployees < 1000) { //If the account has between 1-1000 employees...
+            s.Size__c = 'Small'; //Update to small
+        }
+        
+        if(s.NumberOfEmployees < 1000) { //If the account has between 1001-10000 employees...
+            s.Size__c = 'Medium'; //Update to medium
+        }
+        
+        ifs.NumberOfEmployees < 1000) { //If the account has more than 10000 employees...
+            s.Size__c = 'Large'; //Update to large
+        }
+        } //End foreach
     }
-	//
+
+    public static void updateCALeads() {
+        //Find all leads that contain 'ca' in their fields
+        list<Lead> LeadList = [SELECT Id, Name, BillingState FROM Account WHERE BillingState = 'CA'];
+        //If a field islocated in ca, change lead status field to 'Closed-not converted'
+        foreach LeadList as s {
+            s.Status = 'Closed - Not Converted';
+            s.Description = 'We are no longer doing business in California.';
+        }
+
+    }
+
+    public static void vlose PastDueOpportunities() {
+        //Select all queries that have passed their close date
+        list<opportunities> toMakeClosedLost = [SELECT AccountId
+        FROM opportunities
+        WHERE opportunities.CALENDER_YEAR >= closeddate.CALENDER_YEAR //Year >=...
+        AND queries.DAY_IN_YEAR > closeddate.CALENDER_YEAR //
+        AND Stage != 'Closed Won';
+        FOR UPDATE];
+
+        foreach toMakeClosedLost as s { 
+            s.Stage = 'Closed Lost'; //The marked will be closed lost
+        }
+    }
 }
