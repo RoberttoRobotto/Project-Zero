@@ -9,17 +9,19 @@
 
 public class ProjectZERO {
 	
-	Integer output;
+	Integer output, input;
+    Integer[] inputArray;
+    String s;
     public void ProjectZERO() {
-        output = nFibonacci(Integer a);
+        output = nFibonacci(input);
         system.debug(output);
-        output = nFactorial(Integer b);
-        system.debug();
-        Integer[] sortedArray = sortArray(Integer[]);
-        system.debug('output', + sortedArray);
-        Integer[] array = rotateLeftNTimes(Integer[], Integer);
-        system.debug('output', + array[]);
-        bracketsAreBalanced();
+        output = nFactorial(input);
+        system.debug(output);
+        Integer[] sortedArray = sortArray(inputArray);
+        system.debug('output' + sortedArray);
+        Integer[] rotatedArray = rotateLeftNTimes(inputArray, input);
+        system.debug('output' + rotatedArray);
+        bracketsAreBalanced(s);
         updateAccountSize();
         updateCALeads();
         closePastDueOpportunities();
@@ -165,7 +167,7 @@ public class ProjectZERO {
         //Find all leads that contain 'ca' in their fields
         //list<Lead> LeadList = [SELECT Name FROM Lead WHERE Address = 'CA' FOR UPDATE];
         
-        for(Lead LeadList: [SELECT Name FROM Lead WHERE Address = 'CA' FOR UPDATE]){
+        for(Lead LeadList: [SELECT Name, Status, Description FROM Lead WHERE Lead.State = 'CA' FOR UPDATE]){
             LeadList.Status = 'Closed - Not Converted'; //If a field islocated in ca, change lead status field to 'Closed-not converted'
             LeadList.Description = 'We are no longer doing business in California.'; //Change description
         }
@@ -176,11 +178,11 @@ public class ProjectZERO {
 		//list<opportunities> toMakeClosedLost
 
         //Select all queries that have passed their close dat
-        for(Opportunity toMakeCloseLost: [SELECT AccountId 
+        for(Opportunity toMakeCloseLost: [SELECT AccountId
                                           FROM Opportunity 
-                                          WHERE Opportunity.CALENDER_YEAR >= CloseDate 
-                                          AND Opportunity.DAY_IN_YEAR > CloseDate 
-                                          AND Stage != 'Closed Won' 
+                                          WHERE TODAY() >= CloseDate.DATE() 
+                                          AND DAY_IN_YEAR() > CloseDate 
+                                          AND StageName != 'Closed Won' 
                                           FOR UPDATE]){ 
             toMakeCloseLost.Stage = 'Closed Lost'; //The marked will be closed lost
         }
