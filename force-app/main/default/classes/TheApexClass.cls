@@ -1,48 +1,40 @@
-public with sharing class TheApexClass {
+public class TheApexClass {
     public TheApexClass() {
-        
-
-    //Check if an account is overdrawn and change the status of the account accordingly
-    //If account balance equals zero or greater
-    
-    
-    if (account.balance < 0){
-        
-    };
-    //If not, update account to say 'in-debt'
-    system.debug('Warning! The balance is now negative and the account is in debt.');
-
-    //Create a new transaction relating to the account.
-    
-    //Update the account based on all related transactions to show current balance
-    
+	
+        Decimal Amount;
+        String Stuff;
+        isAccountOverDrawn();
+    	createNewTransaction(Amount, Stuff);
     }
 
-    void isAccountOverDrawn( Account.name ){
+   public void isAccountOverDrawn(){
         
-        for(Account : [SELECT , Name, BillingState FROM Account WHERE Account.name FOR UPDATE]) {
-        
-        Account.name //If account is negative...
-        Account.cleanStatus = InDebt; //Change status to In-debt
-        Account.Description = 'The account is overdrawn. It is now in debt.';
-        //Give warning
+        for(Account DebtCheck : [SELECT Name, OwnerID, Balance__c FROM Account WHERE Account.balance__c < 0 FOR UPDATE]) {
+            DebtCheck.In_debt__c = 'In Debt'; //If account is negative...
+            DebtCheck.Description = 'The account is overdrawn. It is now in debt.'; //Change status to In-debt
+        system.debug(DebtCheck);
+        }
+        for(Account ClearCheck : [SELECT Name, OwnerID, Balance__c FROM Account WHERE Account.balance__c >= 0 FOR UPDATE]) {
+            ClearCheck.In_debt__c = 'Clear'; //If account is positive
+            ClearCheck.Description = 'The account is doing well.'; //Change status to clear
+        }
+    }
+    
+   public void createNewTransaction( Decimal Money, String SearchThisNumber ) {
+      	list<Account> AccountList = [SELECT AccountNumber, Customer__c, Balance__c FROM Account WHERE AccountNumber = SearchThisNumber];
+		system.debug(AccountList);
+        AccountList.Balance__c += Money;
+        system.debug(AccountList);
+    	}
+    }
 
-
+   public void updateAndShowTransactions( ){
+        for (Account ChangeBalance : [SELECT Name, OwnerID, Balance__c FROM Account WHERE AccountNumber = SearchThisNumber]) { //For each transaction
+			            ChangeBalance.Balance__c += Money; //Add (Or remove) funds to balance (Money may be negative)            
+            system.debug(ChangeBalance, Account.Balance__c);
         }
 
-    }
-    
-    void createNewTransaction(){
-
-                //If a transaction was detected,
-                //Add (Or remove) funds to balance
-        //Transaction
-    }
-
-    void updateAndShowTransactions(){
-
-
-        
+        debug.(Transaciton);
     }
 
 
