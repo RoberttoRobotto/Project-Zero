@@ -16,14 +16,15 @@ public with sharing class TheApexClass {
     
     //Update the account based on all related transactions to show current balance
     
-    
     }
 
-
     void isAccountOverDrawn( Account.name ){
-        if(Account.balance < 0) {
+        
+        for(Account : [SELECT , Name, BillingState FROM Account WHERE Account.name FOR UPDATE]) {
+        
         Account.name //If account is negative...
-        Account.name //Change status
+        Account.cleanStatus = InDebt; //Change status to In-debt
+        Account.Description = 'The account is overdrawn. It is now in debt.';
         //Give warning
 
 
@@ -33,10 +34,16 @@ public with sharing class TheApexClass {
     
     void createNewTransaction(){
 
-
+                //If a transaction was detected,
+                //Add (Or remove) funds to balance
+        //Transaction
     }
 
+    void updateAndShowTransactions(){
 
+
+        
+    }
 
 
 

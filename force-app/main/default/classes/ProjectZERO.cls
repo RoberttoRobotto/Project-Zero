@@ -21,7 +21,8 @@ public class ProjectZERO {
         system.debug('output' + sortedArray);
         Integer[] rotatedArray = rotateLeftNTimes(inputArray, input);
         system.debug('output' + rotatedArray);
-        bracketsAreBalanced(s);
+        boolean areBalanced = bracketsAreBalanced(s);
+        system.debug(areBalanced);
         updateAccountSize();
         updateCALeads();
         closePastDueOpportunities();
@@ -98,12 +99,12 @@ public class ProjectZERO {
     //Balanced brackets logic
     public static boolean bracketsAreBalanced( String s ){
         
-        for(string x : s){ //Create a for loop 
+        for( Integer x : s.getChars()){ //Create a for loop
         
         //Create a switch statement
         switch on x {
 			
-                when '(' {    if (-1 == s.indexOf(')', s.indexOf(')'))){
+                when 40 {    if (-1 == s.indexOf(')', s.indexOf(')'))){
                 	return false;} //Return false if '(' was found, but ')' wasn't
                      		  else if (s.indexOf(')', s.indexOf(')')) > s.indexOf(']', s.indexOf(')')) && s.indexOf('(') < s.indexOf(']')){
                     return false;} //Return false if '(])' happens
@@ -111,7 +112,7 @@ public class ProjectZERO {
                     return false;} //Return false if '(})' happens
                         }
                 
-                when '[' {    if (-1 == s.indexOf(']', s.indexOf(']'))){
+                when 91 {    if (-1 == s.indexOf(']', s.indexOf(']'))){
                 	return false;} //Return false if '[' was found, but ']' wasn't
                      		  else if (s.indexOf(']', s.indexOf(']')) > s.indexOf(')', s.indexOf(']')) && s.indexOf('[') < s.indexOf(')')){
                     return false;} //Return false if '[)]' happens
@@ -119,7 +120,7 @@ public class ProjectZERO {
                     return false;} //Return false if '[}]' happens
         				}
                 
-                when '{' {    if (-1 == s.indexOf('}', s.indexOf(']'))){ 
+                when 123 {    if (-1 == s.indexOf('}', s.indexOf(']'))){ 
                 	return false;} //Return false if '{' was found, but '}' wasn't
                           else if (s.indexOf('}', s.indexOf('}')) > s.indexOf(')', s.indexOf('}')) && s.indexOf('{') < s.indexOf(')')){
                     return false;} //Return false if '{)}' happens
@@ -127,13 +128,13 @@ public class ProjectZERO {
                     return false;} //Return false if '{]}' happens
                          }
                 
-                when ')' {    if (-1 == s.indexOf('(')){
+                when 41 {    if (-1 == s.indexOf('(')){
                     return false;} } //Return false if '(' was found, but ')' wasn't
                 
-                when ']' {    if (-1 == s.indexOf('[')){
+                when 93 {    if (-1 == s.indexOf('[')){
                 	return false;} } //Return false if '[' was found, but ']' wasn't
                 
-                when '}' {    if (-1 == s.indexOf('{')){
+                when 125 {    if (-1 == s.indexOf('{')){
                 	return false;} } //Return false if '{' was found, but '}' wasn't
 
         	}//End switch
@@ -149,15 +150,15 @@ public class ProjectZERO {
 
         for(Account AccountList: [SELECT Id, Name, BillingState FROM Account FOR UPDATE]) { //For each account in the list...
 
-        if(AccountList.NumberOfEmployees < 1000) { //If the account has between 1-1000 employees...
+        if(AccountList.NumberOfEmployees <= 1000) { //If the account has between 1-1000 employees...
             AccountList.Size_c__c = 'Small'; //Update to small
         }
         
-        if(AccountList.NumberOfEmployees < 1000) { //If the account has between 1001-10000 employees...
+        if(AccountList.NumberOfEmployees >= 1001 && AccountList.NumberOfEmployees <= 10000) { //If the account has between 1001-10000 employees...
             AccountList.Size_c__c = 'Medium'; //Update to medium
         }
         
-        if(AccountList.NumberOfEmployees < 1000) { //If the account has more than 10000 employees...
+        if(AccountList.NumberOfEmployees > 10000) { //If the account has more than 10000 employees...
             AccountList.Size_c__c = 'Large'; //Update to large
         }
         } //End foreach
@@ -165,7 +166,7 @@ public class ProjectZERO {
 
     public static void updateCALeads() {
         //Find all leads that contain 'ca' in their fields
-        //list<Lead> LeadList = [SELECT Name FROM Lead WHERE Address = 'CA' FOR UPDATE];
+        //list<Lead> LeadList = [SELECT Name FROM Lead WHERE Lead.State = 'CA' FOR UPDATE];
         
         for(Lead LeadList: [SELECT Name, Status, Description FROM Lead WHERE Lead.State = 'CA' FOR UPDATE]){
             LeadList.Status = 'Closed - Not Converted'; //If a field islocated in ca, change lead status field to 'Closed-not converted'
@@ -177,14 +178,10 @@ public class ProjectZERO {
         
 		//list<opportunities> toMakeClosedLost
 
-        //Select all queries that have passed their close dat
-        for(Opportunity toMakeCloseLost: [SELECT AccountId
-                                          FROM Opportunity 
-                                          WHERE TODAY() >= CloseDate.DATE() 
-                                          AND DAY_IN_YEAR() > CloseDate 
-                                          AND StageName != 'Closed Won' 
-                                          FOR UPDATE]){ 
-            toMakeCloseLost.Stage = 'Closed Lost'; //The marked will be closed lost
-        }
+        //Select all queries that have passed their close date
+        for(Opportunity toMakeCloseLost: [SELECT AccountId FROM Opportunity WHERE StageName != 'Closed Won' FOR UPDATE]){ 
+            if(Date.TODAY() > toMakeCloseLost.CloseDate) {
+            toMakeCloseLost.StageName = 'Closed Lost'; //The marked will be closed lost
+            } }
     }
 }
